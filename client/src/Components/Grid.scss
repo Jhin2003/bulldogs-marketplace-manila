@@ -1,0 +1,14 @@
+.grid-container {
+    display: grid;
+    gap: 20px; /* Space between items */
+    padding: 20px;
+
+    > * {
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #f9f9f9;
+      
+    
+      }
+  }
+  

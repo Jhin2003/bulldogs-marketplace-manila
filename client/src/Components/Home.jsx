@@ -1,18 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./Header/Header";
 import Card from "./card";
 import Grid from "./Grid";
-
-import useProducts from "../hooks/getProducts";
-
-import { useSearch } from '../context/SearchContext';
-
+import Catalog from "./Catalog";
+import { Navigate, useNavigate } from "react-router-dom";
+import useProducts from "../hooks/useProducts";
+import { useUser } from "../context/UserContext";
+import CategoriesBar from "./CategoriesBar";
 
 const Home = () => {
-  const { products, loading, error } = useProducts();
-  
+  const navigate = useNavigate();
 
-  const { searchQuery } = useSearch();
+  const { user } = useUser();
+
+  const { products, loading, error } = useProducts();
+
+  const [search, setSearch] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');  // Redirect to login if not logged in
+    }
+  }, [user, navigate]);
+
+  const handleSearch = (query) => {
+    setSearch(query);
+  };
 
   if (loading) {
     return (
@@ -20,7 +35,7 @@ const Home = () => {
         <Header />
         <div>Loading products...</div>;
       </>
-    ); // Show loading message while fetching data
+    );
   }
 
   if (error) {
@@ -29,22 +44,14 @@ const Home = () => {
         <Header />
         <div>{error}</div>;
       </>
-    ); // Show error message if fetching products fails
+    );
   }
-  
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
 
   return (
     <>
-      <Header />
-      <Grid columns={4}>
-        {filteredProducts.map((product) => (
-          <Card key={product.id} mainImage = {product.ProductImages[0].image_url} name={product.name} price = {product.price}></Card>
-        ))}
-      </Grid>
+      <Header onSearch={handleSearch} />
+      <CategoriesBar setSelectedCategory={setSelectedCategory}/>
+      <Catalog products={products} search={search} selectedCategory = {selectedCategory} />
     </>
   );
 };

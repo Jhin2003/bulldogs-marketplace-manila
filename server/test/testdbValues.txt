@@ -1,0 +1,40 @@
+-- Inserting test data for `user` table
+INSERT INTO `user` (`username`, `email`, `password`, `image_url`, `createdAt`, `updatedAt`) 
+VALUES
+  ('johndoe', 'johndoe@example.com', '123','/images/userImages/user1.jpg', '2025-01-12 10:00:00', '2025-01-12 10:00:00'),
+  ('janedoe', 'janedoe@example.com', '123', '/images/userImages/user1.jpg', '2025-01-12 10:00:00', '2025-01-12 11:00:00'),
+  ('alexsmith', 'alex.smith@example.com', '123','/images/userImages/user1.jpg', '2025-01-13 09:30:00', '2025-01-13 09:30:00');
+
+
+INSERT INTO `categories` (`name`, `created_at`)
+VALUES
+  ('Electronics', '2025-01-13 12:00:00'),
+  ('Furniture', '2025-01-13 12:30:00'),
+  ('Toys', '2025-01-13 14:00:00');
+
+
+-- Inserting test data for `product` table
+INSERT INTO `product` (`user_id`, `category_id`, `name`, `price`, `description`, `created_at`) 
+VALUES
+  (1, '1' , 'Product A', 20.00, 'This is a description for Product A', '2025-01-13 12:00:00'),
+  (2, '1', 'Product B', 35.50, 'This is a description for Product B', '2025-01-13 14:00:00'),
+  (3, '1', 'Product C', 15.75, 'This is a description for Product C', '2025-01-13 16:00:00'),
+  (1, '2', 'Product D', 45.00, 'This is a description for Product D', '2025-01-14 10:00:00');
+
+-- Inserting test data for `product_image` table
+INSERT INTO `product_image` (`product_id`, `image_url`, `is_primary`, `created_at`, `updated_at`)
+VALUES
+  (1, '/images/productImages/image1.jpg', 1, '2025-01-13 12:10:00', '2025-01-13 12:10:00'),
+  (1, '/images/productImages/productA2.jpg', 0, '2025-01-13 12:12:00', '2025-01-13 12:12:00'),
+  (2, '/images/productImages/productB1.jpg', 1, '2025-01-13 14:10:00', '2025-01-13 14:10:00'),
+  (3, '/images/productImages/productC1.jpg', 1, '2025-01-13 16:15:00', '2025-01-13 16:15:00'),
+  (4, '/images/productImages/productD1.jpg', 1, '2025-01-14 10:05:00', '2025-01-14 10:05:00');
+
+  INSERT INTO `messages` (`senderId`, `receiverId`, `message`, `createdAt`) 
+VALUES
+  (1, 2, 'Hello Jane, check out Product A!', '2025-01-13 12:15:00'),
+  (2, 1, 'Hi John, I saw your product! Looks great!', '2025-01-13 14:20:00'),
+  (1, 3, 'Hey Alex, I have a new product for you, check it out!', '2025-01-13 16:30:00'),
+  (3, 1, 'Product D looks amazing! Interested in buying it.', '2025-01-14 10:10:00'),
+  (2, 3, 'Alex, I think you would like Product C, take a look.', '2025-01-14 11:00:00'),
+  (3, 2, 'Hi Jane, thanks for the recommendation. Product C looks great!', '2025-01-14 11:10:00');

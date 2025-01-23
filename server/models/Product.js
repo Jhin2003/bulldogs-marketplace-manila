@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/dbConnection"); // Import database connection
 const User = require("./User"); // Import User model
+const Category = require("./Category");
 
 const Product = sequelize.define(
   "Product",
@@ -15,12 +16,21 @@ const Product = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "user", // Table name of the User model
+        model: User, // Table name of the User model
         key: "id", // Column in the User table
       },
       onDelete: "CASCADE", // Deletes product if associated user is deleted
       onUpdate: "CASCADE", // Updates user_id if associated user's id changes
     },
+
+    category_id:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Category, // Table name of the User model
+        key: "id", // Column in the User table
+      },
+      },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

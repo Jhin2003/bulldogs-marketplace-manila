@@ -1,27 +1,30 @@
-import { useState } from 'react'
-import Login from './components/login';
-import Home from './Components/Home';
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import Login from "./Components/Login";
+import Home from "./Components/Home";
+import ProductDetail from "./Components/ProductDetail/ProductDetail"
 
-import { SearchProvider } from './context/SearchContext';
+import { UserProvider } from "./context/UserContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.scss";
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import "./App.scss"
+const queryClient = new QueryClient()
 const App = () => {
   return (
-    <>
-      <Router>
-      <Routes>
-        <Route path="/" element={<>
-          <SearchProvider>
-           <Home/>
+    <QueryClientProvider client={queryClient}>
+    <UserProvider>
+     <Router>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />  
+            <Route path="/product/:id" element={<ProductDetail />} />
+        </Routes>
+      </Router>
+    </UserProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider> 
+  );
+};
 
-          </SearchProvider>
-         
-        </>} />
-      </Routes>
-    </Router>
-    </>
-  )
-}
-
-export default App
+export default App;

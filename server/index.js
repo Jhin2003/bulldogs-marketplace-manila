@@ -1,31 +1,35 @@
 const express = require("express");
 const app = express();
 var cors = require("cors");
-const port = 3000;
+
 const path = require("path");
+const multer = require("multer");
+require('dotenv').config();
 
 
-const syncDatabase = require('./db/sync'); // Import sync function
+const port = process.env.PORT || 3000;
 
-const productRoutes = require("./routes/productRoutes"); // Import the router
+const {syncDatabase} = require('./db/sync'); // Import sync function
+const Routes = require('./routes/routes.js'); // Import routes
 
-app.use("/images", express.static(path.join(__dirname, "public/images")));
-
+//middlewares
 app.use(express.json());
 app.use(cors());
 
-
-
+//serve public images
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-app.use("/products", productRoutes); // Routes prefixed with '/products'
+//Routers
+app.use('/', Routes);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+syncDatabase().then(() => {
+  
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}).catch((error) => {
+  console.error('Error syncing database:', error);
 });
 
 // Start the server and sync models

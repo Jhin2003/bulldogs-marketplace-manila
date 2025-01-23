@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import getProducts from '../service/api';  // Import the getProducts function from your API module
+import {getProducts} from '../service/api';  // Import the getProducts function from your API module
 
 const useProducts = () => {
   const [products, setProducts] = useState([]);

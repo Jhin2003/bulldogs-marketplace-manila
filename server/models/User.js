@@ -21,6 +21,11 @@ const User = sequelize.define('User', {
       isEmail: true, // Validates email format
     },
   },
+
+  image_url: {
+    type: DataTypes.STRING(255),   // URL or path to the image
+     defaultValue: '/images/userImages/default.jpg',
+  },
   password: {
     type: DataTypes.STRING,
     allowNull: false,

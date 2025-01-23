@@ -1,5 +1,5 @@
 const  sequelize  = require('./dbConnection');
-const { Product, ProductImage, User } = require('../models/associations'); // Import models
+const { Product, ProductImage, User, UserImage , Category} = require('../models/associations'); // Import models
 
 const syncDatabase = async () => {
   try {
@@ -14,6 +14,6 @@ const syncDatabase = async () => {
   }
 };
 
-// Run the sync
-syncDatabase();
+
+module.exports = {syncDatabase}
 

@@ -1,5 +1,9 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const Product = require("../models/Product")
+const Likes = require("../models/Like")
+const ProductImage = require("../models/ProductImage")
+const Category = require("../models/Category")
 
 
 const loginUser = async (req, res) => {
@@ -64,4 +68,93 @@ const signupUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser };
+
+const getUserProducts = async (req, res) => {
+  try {
+      const { id} = req.params; // Assuming the user ID is passed as a route parameter
+
+      // Check if user exists
+      const user = await User.findByPk(2);
+      if (!user) {
+     
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Fetch products associated with the user
+      const products = await Product.findAll({
+          where: { user_id: id}, // Assuming 'userId' is the foreign key in the Product table
+          include: [
+            {
+              model: ProductImage,
+              required: false, // Optional: Products without images will also be included
+              attributes: ["image_url"], // Specify columns to include
+            },
+            {
+              model: User,
+              required: true, // Optional: Only include products with associated users
+              attributes: ["id", "username", "email", "image_url"], // User attributes to include
+            },
+            {
+              model: Category,
+              required: true, // Optional: Only products that have an associated category
+              attributes: ["name"], // Category name (you can include more attributes if needed)
+            },
+          ],
+      });
+
+      res.status(200).json(products);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+const getUserLikes = async (req, res) => {
+  try {
+    console.log("tite")
+    const { id } = req.params;
+
+    // Find the user and include the products they liked, along with categories and product images
+    const user = await User.findByPk(id, {
+      include: {
+        model: Product,
+        include: [
+          {
+            model: ProductImage,
+            required: false, // Optional: Products without images will also be included
+            attributes: ["image_url"], // Specify columns to include
+          },
+          {
+            model: User,
+            required: true, // Optional: Only include products with associated users
+            attributes: ["id", "username", "email", "image_url"], // User attributes to include
+          },
+          {
+            model: Category,
+            required: true, // Optional: Only products that have an associated category
+            attributes: ["name"], // Category name (you can include more attributes if needed)
+          },
+        ],
+        through: { attributes: [] }, // Exclude 'Like' table attributes    
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log("tite")
+    console.log(user.Products)
+    res.json({products : user.Products}); // Return the liked products with categories and images
+  } catch (error) {
+    console.error("Error fetching liked products:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getUserReviews = async (req, res) => {
+  
+}
+
+module.exports = { signupUser, loginUser, getUserProducts, getUserLikes };

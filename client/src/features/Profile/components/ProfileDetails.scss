@@ -1,0 +1,31 @@
+.profile-details-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centers the profile details container */
+    padding: 20px;
+  }
+  
+  .profile-main-details-container {
+    display: flex;
+    align-items: center; /* Ensures the image and text are vertically aligned */
+    gap: 20px; /* Adds space between the image and text */
+  }
+  
+  .profile-detail-picture {
+    width: 100px; /* Adjust the image width */
+    height: 100px; /* Adjust the image height */
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image covers the circle */
+  }
+  
+  .profile-text-details {
+    display: flex;
+    flex-direction: column; /* Stack name and email vertically */
+  }
+  
+  .profile-detail-name, .profile-detail-email {
+    margin: 0;
+    font-size: 18px;
+    color: #333; /* Adjust font color */
+    text-align: left; /* Align text to the left */
+  }

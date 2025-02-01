@@ -42,47 +42,62 @@ const Login = () => {
 
   return (
     <>
-      {isLogin ? (
-        <form className="login-form" onSubmit={handleLogin}>
-          <h2>Login</h2>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email" // Add this attribute
-              value={userData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password" // Add this attribute
-              value={userData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <button type="submit" className="btn-login">
-            Login
-          </button>
-        </form>
-      ) : (
-        <SignUp setIsLogin={toggleMode} />
-      )}
+      <div className="login-container">
+     
+        {isLogin ? (
+          
+          <form className="login-form" onSubmit={handleLogin}>
+             <div className = "brand-div">
+             Bulldogs Marketplace
+             </div>
+        
+            <h2>Login</h2>
+            <div className="form-group">
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                name="email" // Add this attribute
+                value={userData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password" // Add this attribute
+                value={userData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button type="submit" className="btn-login">
+              Login
+            </button>
+            <p className="toggle-text">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <span className="toggle-link" onClick={toggleMode}>
+                {isLogin ? "Sign Up" : "Login"}
+              </span>
+            </p>
+          </form>
+            
+        ) : (
+        
+            <SignUp isLogin = {isLogin} toggleMode={toggleMode} />
+           
+          
+        )}
 
-      <p className="toggle-text">
-        {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-        <span className="toggle-link" onClick={toggleMode}>
-          {isLogin ? "Sign Up" : "Login"}
-        </span>
-      </p>
+        <div className="login-image-container">
+          <img className = "login-image" src="https://www.technocrazed.com/wp-content/uploads/2015/12/Blue-Wallpaper-For-Background-27.jpg" alt="login-image" />
+        </div>
+      </div>
     </>
   );
 };

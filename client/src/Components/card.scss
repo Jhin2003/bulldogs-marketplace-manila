@@ -1,14 +1,70 @@
-.card-mainimage{
-    img{
-        width: 300px;
-        height: 300px;
+.card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 280px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     }
-}
-
-
-.card-userimage{
-    img{
-        width: 30px;
-        height: 30px;
+  
+    .card-main-image {
+      width: 100%;
+      height: 180px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+      }
     }
-}
+  
+    .card-name,
+    .card-price,
+    .card-username,
+    .card-time-agp {
+      margin-left: 10px;  // Align to left
+    }
+  
+    .card-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 10px 0;
+      color: #333;
+      word-wrap: break-word;
+    }
+  
+    .card-price {
+      font-size: 16px;
+      font-weight: 500;
+      color: #f44336;
+      margin: 5px 0;
+    }
+  
+    .card-username {
+      font-size: 14px;
+      color: #757575;
+      margin: 5px 0;
+    }
+  
+    .card-time-agp {
+      font-size: 12px;
+      color: #9e9e9e;
+      margin-bottom: 10px;
+    }
+  
+    .like-button-wrapper {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-start;  // Align button to the left
+      align-items: center;
+      width: 100%;
+    }
+  }

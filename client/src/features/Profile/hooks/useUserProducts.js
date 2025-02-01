@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react';
-import { getProductById } from '../service/api';
+import { getUserProducts } from '../../../service/api';
 
-const useProduct = (id) => {
-  const [product, setProduct] = useState(null);
+const useUserProducts = (id) => {
+  const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   useEffect(() => {
-    if (!id) return;
-
-    const fetchProduct = async () => {
+    const fetchProducts = async () => {
       setLoading(true);
       setError(null);
-
       try {
-        const data = await getProductById(id);
-        setProduct(data);
+        const data = await getUserProducts(id);
+        setProducts(data);
       } catch (err) {
         setError(err.message || 'Error fetching product');
       } finally {
@@ -23,10 +19,10 @@ const useProduct = (id) => {
       }
     };
 
-    fetchProduct();
+    fetchProducts();
   }, [id]);
 
-  return { product, loading, error };
+  return { products, loading, error };
 };
 
-export default useProduct;
+export default useUserProducts;

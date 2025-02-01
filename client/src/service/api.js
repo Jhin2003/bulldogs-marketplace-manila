@@ -1,20 +1,59 @@
 import axios from 'axios';
-
-
-
 const API_BASE_URL = 'http://localhost:3000';
 
-// Function to fetch products
-const getProducts = async () => {
-    try {
-        const response = await axios.get(`${API_BASE_URL}/products`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching products:', error);
-        throw error;
-    }
-};
+const getProducts = async ({ page = 1, limit = 10, search = "", categoryId = "" }) => {
+  try {
+    // Prepare the query parameters
+    const params = {
+      page,
+      limit,
+      ...(search && { search }),        // Only include search if it's not an empty string
+      ...(categoryId && { categoryId }), // Only include categoryId if it's not an empty string
+    };
 
+    // Make the GET request with the params
+    const response = await axios.get(`${API_BASE_URL}/products`, { params });
+    return response.data // Return the data from the response
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error; // Optionally throw the error for use in the calling component
+  }
+}
+
+const getUserProducts = async (id) => {
+  try {
+    // Make the GET request with the params
+    const response = await axios.get(`${API_BASE_URL}/user/${id}/products`);
+    return response.data // Return the data from the response
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error; // Optionally throw the error for use in the calling component
+  }
+}
+
+
+const getUserLikes = async (id) => {
+  try {
+    // Make the GET request with the params
+    const response = await axios.get(`${API_BASE_URL}/user/${id}/likes`);
+    return response.data // Return the data from the response
+  } catch (error) {
+    console.error("Error fetching Likes:", error);
+    throw error; // Optionally throw the error for use in the calling component
+  }
+}
+
+
+const getUserReviews = async (id) => {
+  try {
+    // Make the GET request with the params
+    const response = await axios.get(`${API_BASE_URL}/user/${id}/reviews`);
+    return response.data // Return the data from the response
+  } catch (error) {
+    console.error("Error fetching Reviews:", error);
+    throw error; // Optionally throw the error for use in the calling component
+  }
+}
 // Fetch product by ID
  const getProductById = async (id) => {
   try {
@@ -55,9 +94,6 @@ const getProducts = async () => {
   }
 };
 
-
-
-
 // Fetch all categories
 const getCategories = async () => {
   try {
@@ -69,6 +105,38 @@ const getCategories = async () => {
   }
 };
 
+const getLikeStatus = async (userId, productId) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/like/status`, {
+      params: { userId, productId }, // Pass as query parameters
+    });
+    console.log()
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error('Error fetching like status:', error);
+    throw error;
+  }
+};
+
+const likeProduct = async (userId, productId) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/like`, { userId, productId });
+    return response.data; // Return the created like
+  } catch (error) {
+    console.error('Error liking product:', error);
+    throw error;
+  }
+};
+
+export const unlikeProduct = async (userId, productId) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/like`, { data: { userId, productId }});
+    return response.data;  // Assuming the response confirms the unlike
+  } catch (error) {
+    console.error('Error unliking product:', error);
+    throw error;
+  }
+};
 
  const getMessages = async (userId) => {
   try {
@@ -78,6 +146,7 @@ const getCategories = async () => {
     throw new Error('Error fetching messages: ' + error.message);
   }
 };
+
 const authenticateSignup = async (userData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/signup`, userData);
@@ -94,8 +163,7 @@ const authenticateSignup = async (userData) => {
   }
 };
 
-
-  const authenticateLogin = async (userData) => {
+const authenticateLogin = async (userData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, userData);
       return response.data;
@@ -114,7 +182,5 @@ const authenticateSignup = async (userData) => {
     }
   };
 
-
-
-
-export {getProducts,getProductById, addProduct, getCategories, getMessages, authenticateSignup, authenticateLogin}
+export {getProducts ,getProductById, getUserProducts, getUserLikes, getUserReviews, addProduct, getCategories, 
+  getMessages, getLikeStatus, likeProduct, authenticateSignup, authenticateLogin}

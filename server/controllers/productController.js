@@ -3,29 +3,66 @@ const Product = require("../models/Product"); // Import your Product model
 const User = require("../models/User");
 const ProductImage = require("../models/ProductImage");
 const Category = require("../models/Category");
+const { Op } = require("sequelize");
 
-// Controller function to fetch all products
+
+
 const getProducts = async (req, res) => {
+  const { search, categoryId, page = 1, limit = 10 } = req.query; // Destructure query params
+   
+  // Calculate the offset for pagination
+  const offset = (page - 1) * limit;
+
   try {
-    const products = await Product.findAll({
+    const whereConditions = {}; // Conditions for filtering
+
+    // Search filter for product name
+    if (search) {
+      whereConditions.name = {
+        [Op.like]: `%${search}%`, // Like search query for product name
+      };
+    }
+
+    // Category filter
+    if (categoryId) {
+      whereConditions.category_id= categoryId; // Filter by categoryId if provided
+    }
+
+    // Fetch products with pagination, search, and category filter
+    const { rows, count } = await Product.findAndCountAll({
+      where: whereConditions,
       include: [
         {
           model: ProductImage,
-          required: false, // Optional, if you want to include products without images
+          required: false, // Optional: Products without images will also be included
+          attributes: ["image_url"], // Specify columns to include
         },
         {
-          model: User, // Include the User model
-          required: true, // Optional: If you want only products that have an associated user
-          attributes: ["id", "username", "email", "image_url"], // Specify the attributes to include (optional)
+          model: User,
+          required: true, // Optional: Only include products with associated users
+          attributes: ["id", "username", "email", "image_url"], // User attributes to include
         },
         {
           model: Category,
-          required: true,
+          required: true, // Optional: Only products that have an associated category
+          attributes: ["name"], // Category name (you can include more attributes if needed)
         },
       ],
-    }); // Retrieve all products
-    console.log(products);
-    res.json(products); // Send products as a JSON response
+      limit: parseInt(limit), // Set the maximum number of records to return
+      offset: parseInt(offset), // Set the number of records to skip
+    });
+
+    // Determine if there's a next page
+    const hasNextPage = page * limit < count;
+
+    // Send the paginated products as a response
+    res.json({
+      data: rows,
+      totalCount: count,
+      hasNextPage,
+      page: parseInt(page),
+      totalPages: Math.ceil(count / limit),
+    });
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({ message: "Error fetching products" });
@@ -47,6 +84,11 @@ const getProductById = async (req, res) => {
           model: User, // Include the User model
           required: true, // Only include products with associated users
           attributes: ["id", "username", "email", "image_url"], // Specify user attributes
+        },
+        {
+          model: Category,
+          required: true, // Optional: Only products that have an associated category
+          attributes: ["name"], // Category name (you can include more attributes if needed)
         },
       ],
     });
@@ -99,6 +141,7 @@ const addProduct = async (req, res) => {
     console.error("Error creating product:", error);
     res.status(500).json({ message: "Error creating product" });
   }
+ 
 };
 
 module.exports = { getProducts, getProductById, addProduct };

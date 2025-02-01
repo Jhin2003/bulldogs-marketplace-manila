@@ -1,0 +1,27 @@
+// ProfileSectionSwitcher.scss
+
+// Tab container
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  // Base styles for tab buttons
+  .profile-tab {
+    padding: 10px 16px;
+    color: gray;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+  
+    &:hover {
+      color: black;
+    }
+  
+    &.active {
+      font-weight: bold;
+      color: black;
+      border-bottom: 2px solid blue;
+    }
+  }

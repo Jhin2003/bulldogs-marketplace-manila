@@ -11,9 +11,10 @@ const SearchBar = ({onSearch}) => {
       };
 
       const handleClick = (e) =>{
-  
+
+        e.preventDefault() 
         setSearchQuery(e.target.value);
-        console.log("tite")
+        
         
       }
 
@@ -36,7 +37,7 @@ const SearchBar = ({onSearch}) => {
         className="search-input"
         value={searchQuery}
         onChange={handleInputChange}
-        placeholder={"Seach"}
+        placeholder={"Search"}
       />
       <button></button>
  </form>

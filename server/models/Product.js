@@ -23,14 +23,14 @@ const Product = sequelize.define(
       onUpdate: "CASCADE", // Updates user_id if associated user's id changes
     },
 
-    category_id:{
+    category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Category, // Table name of the User model
         key: "id", // Column in the User table
       },
-      },
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -42,18 +42,12 @@ const Product = sequelize.define(
     description: {
       type: DataTypes.TEXT,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
   },
   {
     tableName: "product", // Optional: Custom table name
-    timestamps: false, // Disable automatic `createdAt` and `updatedAt`
+    timestamps: true, // Enable timestamps (createdAt and updatedAt)
+    underscored: true,
   }
 );
-
-
 
 module.exports = Product;

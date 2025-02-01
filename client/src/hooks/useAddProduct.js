@@ -11,6 +11,7 @@ const useAddProduct = () => {
 
     try {
       const data = await addProduct(productData, images.map((image) => image.file)); // Call the API service
+
       return data; // Return data from API response
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred while creating the product.");

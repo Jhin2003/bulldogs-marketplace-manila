@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { authenticateSignup } from '../service/api';
 import './Signup.scss';  // Import the SCSS file
 
-const SignUp = ({ setIsLogin }) => {
+const SignUp = ({isLogin, toggleMode }) => {
   const [userData, setUserData] = useState({
     username: '',
     email: '',
@@ -22,7 +22,7 @@ const SignUp = ({ setIsLogin }) => {
     try {
       const response = await authenticateSignup(userData);
       console.log('User created successfully:', response);
-      setIsLogin();
+      toggleMode();
     } catch (error) {
       console.error('Error creating user:', error);
     }
@@ -71,6 +71,12 @@ const SignUp = ({ setIsLogin }) => {
         <button className="signup-button" type="submit">
           Signup
         </button>
+        <p className="toggle-text">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <span className="toggle-link" onClick={toggleMode}>
+                {isLogin ? "Sign Up" : "Login"}
+              </span>
+            </p>
       </form>
     </div>
   );

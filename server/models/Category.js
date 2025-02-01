@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/dbConnection");
-const Product = require("./Product"); // Import User model
+const Product = require("./Product"); // Import Product model if needed
 
 const Category = sequelize.define("Category", {
   id: {
@@ -8,22 +8,14 @@ const Category = sequelize.define("Category", {
     primaryKey: true,
     autoIncrement: true,
   },
-  
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW,
-  },
- 
-},{
-    tableName: "categories",
-    timestamps: false, // Disable automatic
-}
-
-);
+  }
+}, {
+  tableName: "categories", // The table name in the database
+  timestamps: true,        // Enable timestamps (createdAt and updatedAt)
+  underscored: true,       // Automatically convert createdAt to created_at and updatedAt to updated_at
+});
 
 module.exports = Category;

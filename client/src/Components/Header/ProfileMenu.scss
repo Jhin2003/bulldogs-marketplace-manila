@@ -1,42 +1,22 @@
-.profile-container {
-    position: relative;
-    display: inline-block;
+.profile-menu {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: white;
 }
 
-.profile-icon {
-    cursor: pointer;
-    display: inline-block;
-}
-
-.icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.profile-popup {
-    position: absolute;
-    top: 60px; /* Adjust based on the profile icon's position */
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    padding: 10px;
-    width: 150px;
-}
-
-.popup-content button {
+.profile-menu-icon {
+  width: 40px; /* Adjust the size as needed */
+  height: 40px; /* Adjust the size as needed */
+  overflow: hidden;
+  border-radius: 50%; /* Makes the image rounded */
+  margin-right: 10px; /* Space between the image and the name */
+  img {
     width: 100%;
-    padding: 10px;
-    text-align: left;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.popup-content button:hover {
-    background-color: #f0f0f0;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fills the container without distortion */
+  }
+  p {
+    font-size: 16px; /* Adjust the font size as needed */
+  }
 }

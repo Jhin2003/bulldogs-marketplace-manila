@@ -4,8 +4,10 @@ import useCategories from "../../hooks/useCategories"; // Import the useCategori
 import "./CreateListingModal.scss";
 
 import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const CreateListingModal = ({ onClose }) => {
+  const navigate = useNavigate();
   const { user } = useUser();
   const [images, setImages] = useState([]);
   const [productData, setProductData] = useState({
@@ -44,7 +46,11 @@ const CreateListingModal = ({ onClose }) => {
       const data = await createProduct(productData, images);
       if (data) {
         // Success actions (e.g., close modal)
+      
+        navigate("/", { replace: true });
+        console.log("narefresh")
         onClose();
+       
       }
     } catch (err) {
       console.error("Error in form submission:", err);

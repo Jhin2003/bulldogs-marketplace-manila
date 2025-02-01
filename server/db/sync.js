@@ -1,5 +1,5 @@
 const  sequelize  = require('./dbConnection');
-const { Product, ProductImage, User, UserImage , Category} = require('../models/associations'); // Import models
+const { Product, ProductImage, User, UserImage , Category, Like} = require('../models/associations'); // Import models
 
 const syncDatabase = async () => {
   try {

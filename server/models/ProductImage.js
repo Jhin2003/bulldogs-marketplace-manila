@@ -26,19 +26,12 @@ const ProductImage = sequelize.define('ProductImage', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,    // Default is false, indicating the image is not the primary one
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-    allowNull: false,
-  },
+
 }, {
   tableName: 'product_image',   // Define custom table name
-  timestamps: false,            // Use manual `created_at` and `updated_at`
+  timestamps: true,        // Enable timestamps (createdAt and updatedAt)
+  underscored: true, 
+  
 });
 
 

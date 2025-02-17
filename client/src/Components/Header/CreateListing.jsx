@@ -1,6 +1,7 @@
 // CreateListing.js
 import  { useState } from 'react';
-import CreateListingModal from './CreateListingModal'; // Import the modal component
+import CreateListingModal from '../Modals/CreateListingModal';
+import './CreateListing.scss'
 
 const CreateListing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,13 +13,12 @@ const CreateListing = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  
 
   return (
-    <div>
-      {/* The button that opens the modal */}
+    <div className='create-listing'>
+  
       <button onClick={handleOpenModal}>Create Listing</button>
-
-      {/* Conditionally render the CreateListingModal */}
       {isModalOpen && <CreateListingModal onClose={handleCloseModal} />}
     </div>
   );

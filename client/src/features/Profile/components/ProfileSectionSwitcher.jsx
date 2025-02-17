@@ -3,29 +3,32 @@ import ProfileListings from "./ProfileListings";
 import ProfileLikes from "./ProfileLikes";
 import "./ProfileSectionSwitcher.scss"; // Import the CSS file
 
-const ProfileSectionSwitcher = () => {
+const ProfileSectionSwitcher = ({isOwner, profile}) => {
   const [activeTab, setActiveTab] = useState("listings");
 
   return (
-    <div>
+    <div className="profile-section-switcher">
       {/* Navigation */}
       <div className="profile-tabs">
         <button
           className={`profile-tab ${activeTab === "listings" ? "active" : ""}`}
           onClick={() => setActiveTab("listings")}
         >
-          My Listings
+           Listings
         </button>
-        <button
-          className={`profile-tab ${activeTab === "likes" ? "active" : ""}`}
-          onClick={() => setActiveTab("likes")}
-        >
-          Likes
-        </button>
+        {isOwner && (
+          <button
+            className={`profile-tab ${activeTab === "likes" ? "active" : ""}`}
+            onClick={() => setActiveTab("likes")}
+          >
+            Likes
+          </button>
+        )}
       </div>
 
       {/* Render the selected section */}
-      {activeTab === "listings" ? <ProfileListings /> : <ProfileLikes />}
+    
+      {activeTab === "listings" ? <ProfileListings profile={profile}  isOwner={isOwner}/> : isOwner && <ProfileLikes profile={profile} />}
     </div>
   );
 };

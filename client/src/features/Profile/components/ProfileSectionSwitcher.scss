@@ -1,9 +1,14 @@
 // ProfileSectionSwitcher.scss
-
+.profile-section-switcher{
+  
+  width: 100%;
+}
 // Tab container
 .profile-tabs {
+  width: 40%;
     display: flex;
     border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
   }
   
   // Base styles for tab buttons

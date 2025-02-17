@@ -1,23 +1,34 @@
 import { useUser } from "../../../context/UserContext";
-
+import { useState } from "react";
+import EditProfileModal from "./modals/EditProfileModal";
 import "./ProfileDetails.scss"
 
-const ProfileDetails = () => {
-  const { user } = useUser();
-
+const ProfileDetails = ({isOwner, profile}) => {
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="profile-details-container">
       <div className="profile-main-details-container">
         <img
           className="profile-detail-picture"
-          src={`http://localhost:3000${user.image_url}`}
+          src={`http://localhost:3000${profile.image_url}`}
           alt="Profile"
         />
         <div className="profile-main-details-text">
-          <h2 className="profile-detail-name">{user.username}</h2>
-          <h2 className="profile-detail-email">{user.email}</h2>
+          <p className="profile-detail-name">{profile.username}</p>
+          <p className="profile-detail-email">{profile.email}</p>
+          {isOwner && (
+          <button className="edit-profile-btn" onClick={() => setIsModalOpen(true)}>Edit Profile</button>
+          )}
         </div>
       </div>
+      {isModalOpen && (
+        <EditProfileModal
+          onClose={() => setIsModalOpen(false)}
+        
+        />
+      )}
+      
     </div>
   );
 };

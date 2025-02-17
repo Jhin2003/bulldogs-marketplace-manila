@@ -1,6 +1,22 @@
 @mixin flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin button-default($bg-color: #007bff, $text-color: #fff) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: none;
+  border-radius: 1.5rem;
+  padding: 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+
+@mixin input-default{
+  font-size: 2rem;
+  border-radius: 1.5rem;
+  padding: 1rem;
+}

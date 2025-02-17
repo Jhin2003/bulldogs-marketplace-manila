@@ -1,0 +1,30 @@
+.product-detail-container{
+    
+    display: flex;
+    flex-direction: column;
+
+
+
+}
+
+.product-name{
+    font-size: 4rem;
+    font-weight: 700;
+}
+
+.product-price{
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.product-description-wrapper{
+    max-width: 800px; 
+    
+
+    h2{
+        font-size: 2rem;
+    }
+    p{
+        font-size: 2rem;
+    }
+}

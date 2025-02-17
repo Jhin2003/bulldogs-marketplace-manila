@@ -1,0 +1,129 @@
+@use '../../../../styles/mixins';
+
+// Modal Overlay
+.edit-profile-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  // Modal Container
+  .edit-profile-modal-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 600px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Title
+  .edit-profile-modal-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  // Profile Image Upload
+  .edit-profile-image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  
+    label {
+      font-size: 2rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+  
+    .edit-profile-image-preview {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #ddd;
+      transition: 0.3s ease-in-out;
+  
+      &:hover {
+        opacity: 0.7;
+        border-color: #666;
+      }
+    }
+  }
+  
+  // Input Fields
+  .edit-profile-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    width: 100%;
+  
+    label {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      color: #444;
+    }
+  
+    .edit-profile-input {
+      @include mixins.input-default;
+      width: 100%;
+     
+      border: 1px solid #ccc;
+      
+   
+      transition: border 0.3s ease-in-out;
+  
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+    }
+  }
+  
+  // Modal Buttons
+  .edit-profile-modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+  
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+    }
+  
+    .edit-profile-save-btn {
+      background: #28a745;
+      color: white;
+  
+      &:hover {
+        background: #218838;
+      }
+    }
+  
+    .edit-profile-cancel-btn {
+      background: #dc3545;
+      color: white;
+  
+      &:hover {
+        background: #c82333;
+      }
+    }
+  }
+  

@@ -3,6 +3,7 @@ import React from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import useLikeProduct from '../../hooks/useLikeProduct';
 
+import "./LikeButton.scss"
 
 const LikeButton = ({ userId, productId }) => {
 
@@ -15,12 +16,9 @@ const LikeButton = ({ userId, productId }) => {
   };
 
   return (
-    <div>
-       <button onClick={handleClick} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-        {liked ? <FaHeart color="red" size={30} /> : <FaRegHeart color="gray" size={30} />}
+       <button className='like-button' onClick={handleClick} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+        {liked ? <FaHeart color="red" size={24} /> : <FaRegHeart color="gray" size={30} />}
       </button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
   );
 };
 

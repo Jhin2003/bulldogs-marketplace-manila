@@ -1,6 +1,13 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../db/dbConnection"); // Import database configuration
 
+
+
+const ROLE = {
+  ADMIN: "admin",
+  USER: "user",
+};
+
 const User = sequelize.define(
   "User",
   {
@@ -26,11 +33,21 @@ const User = sequelize.define(
 
     image_url: {
       type: DataTypes.STRING(255), // URL or path to the image
-      defaultValue: "/images/userImages/default.svg",
+      defaultValue: "/images/userImages/default.jpg",
     },
+
+    
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: ROLE.USER, // Default role is "user"
+      validate: {
+        isIn: [Object.values(ROLE)], // Only allow predefined roles
+      },
     },
   },
   {
@@ -40,4 +57,4 @@ const User = sequelize.define(
   }
 );
 
-module.exports = User;
+module.exports = {User, ROLE};

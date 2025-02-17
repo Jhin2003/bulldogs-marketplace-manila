@@ -1,35 +1,38 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
+
 
 const UserContext = createContext();
 
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    // Load user from localStorage when the app starts
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user)); // Save user to localStorage
-    } else {
-      localStorage.removeItem("user"); // Remove user if logged out
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      setUser(decoded); // Store decoded user data
     }
-  }, [user]);
+    setIsLoading(false); // Set loading to false after checking token
+  }, []);
 
-  const login = (userData) => {
-    setUser(userData); // Update the user state
+  const login = (token) => {
+    localStorage.setItem("token", token);
+    const decoded = jwtDecode(token);
+    const { iat, exp, ...userData } = decoded
+    setUser(userData);
   };
 
   const logout = () => {
-    setUser(null); // Clear user state
-    localStorage.removeItem("user"); // Remove from localStorage
+    localStorage.removeItem("token");
+    setUser(null);
   };
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, isLoading }}>
       {children}
     </UserContext.Provider>
   );

@@ -1,36 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import './Chat.scss'; // Your CSS styles
-import MessagesList from '../MessagesList';
-
+import { useUser } from '../../context/UserContext';
 
 const Chat = () => {
- 
-  const [chatVisible, setChatVisible] = useState(false);
-
-  // Toggle chat visibility
-  const toggleChat = () => {
-    setChatVisible(!chatVisible);
+  const navigate = useNavigate(); // Initialize navigate function
+  const {user} = useUser()
+  // Navigate to the chat page when button is clicked
+  const navigateToChat = () => {
+    navigate(`/chat/${user.id}`); // Replace '/chat' with the actual path for the chat page
   };
 
   return (
     <div className="messenger-container">
- 
-      <button className="chat-icon" onClick={toggleChat}>
+      {/* Button that navigates to the chat page */}
+      <button className="chat-icon" onClick={navigateToChat}>
         💬
       </button>
-
-      {/* Chat dialog */}
-      {chatVisible && (
-        <div className="chat-dialog">
-          <div className="chat-header">
-            <h3>Chat</h3>
-            <button onClick={toggleChat} className="close-btn">X</button>
-          </div>
-          <div className="chat-body">
-            < MessagesList  />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

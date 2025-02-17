@@ -2,6 +2,7 @@
 import useCategories from '../hooks/useCategories';
 import  { useState } from 'react';
 import './CategoryBar.scss'
+import FlexRow from './Layout/FlexRow';
 
 const CategoryTable = ({setSelectedCategory}) => {
 
@@ -23,6 +24,7 @@ const CategoryTable = ({setSelectedCategory}) => {
   };
   return (
     <div className="category-bar">
+    
       {categories.length > 0 ? (
         categories.map((category) => (
           <div
@@ -36,6 +38,7 @@ const CategoryTable = ({setSelectedCategory}) => {
       ) : (
         <div>No categories available.</div>
       )}
+     
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // controllers/productController.js
 const Product = require("../models/Product"); // Import your Product model
-const User = require("../models/User");
+const {User} = require("../models/User");
 const ProductImage = require("../models/ProductImage");
 const Category = require("../models/Category");
 const { Op } = require("sequelize");
@@ -144,4 +144,27 @@ const addProduct = async (req, res) => {
  
 };
 
-module.exports = { getProducts, getProductById, addProduct };
+// DELETE endpoint to delete a product by its ID
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await Product.findByPk(id); // Find the product by primary key (ID)
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    await product.destroy(); // Delete the product from the database
+
+    return res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error deleting product', error: error.message });
+  }
+};
+
+
+
+module.exports = { getProducts, getProductById, addProduct, deleteProduct};

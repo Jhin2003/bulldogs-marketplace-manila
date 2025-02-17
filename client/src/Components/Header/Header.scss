@@ -1,22 +1,28 @@
+@use "../../styles/variables" as *;
 
+.header {
+ 
 
-.header{
-   width: 100%;
-   display: flex;
-   align-items: center;
-   border-bottom: 2px solid gray;
-}
-
-.brand-div{
-  img{
-   width: 120px;
-   height: 120px;
-}
-
-}
-
-.user-actions-div{
-   display: flex;
+  width: 100%;
+ 
+  border-bottom: 2px solid #ddd; // Minimalist border
+  background: #fff; // Clean white background
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); // Subtle shadow
   
 }
 
+.brand {
+   
+   display: flex;
+   gap: 1rem;
+   align-items: center;
+}img {
+  height: 40px; // Adjusted for a minimal look
+  object-fit: contain;
+}
+
+.user-actions {
+  display: flex;
+  gap: 15px; // Spacing between actions
+  align-items: center;
+}

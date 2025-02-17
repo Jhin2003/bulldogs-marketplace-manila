@@ -1,30 +1,37 @@
 /* Style for the category bar container */
 .category-bar {
-    display: flex;
-    overflow-x: auto;
-    padding: 10px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-  }
-  
-  /* Style for each category item */
-  .category-item {
-    cursor: pointer;
-    margin: 0 15px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  /* Hover effect on category items */
-  .category-item:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .category-item.selected {
-    background-color: #007bff;
-    color: white;
-  }
+
+ padding-left: 18rem;
+ display: flex;
+  gap: 1.5rem; /* More natural spacing */
+ 
+  border-bottom: 2px solid #ddd; /* Subtle separator */
+
+}
+
+/* Style for each category item */
+.category-item {
+ padding: 1rem;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+
+
+/* Hover effect */
+.category-item:hover {
+  color: #007bff;
+}
+
+/* Expand underline on hover and selection */
+
+
+/* Selected category style */
+.category-item.selected {
+  color: #007bff;
+  font-weight: 600;
+}

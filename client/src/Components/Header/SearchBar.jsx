@@ -1,47 +1,41 @@
-import React, { useState, useEffect} from 'react';
-import './SearchBar.scss'; // Import the styles
-import { useSearch } from '../../context/SearchContext';
+import React, { useState } from "react";
+import { Search } from "lucide-react"; // Import search icon
+import { useNavigate, useLocation } from "react-router-dom";
+import "./SearchBar.scss"; // Import styles
 
-const SearchBar = ({onSearch}) => {
-    
-    const [ searchQuery, setSearchQuery ] = useState('');
-   
-    const handleInputChange = (e) => {
-        setSearchQuery(e.target.value);
-      };
+const SearchBar = ({ onSearch }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
 
-      const handleClick = (e) =>{
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
-        e.preventDefault() 
-        setSearchQuery(e.target.value);
-        
-        
-      }
+  const handleSearch = (e) => {
+    e.preventDefault(); // Prevent form reload
 
-      useEffect(() => {
-        const timeoutId = setTimeout(() => {
-          onSearch(searchQuery); // Send the final query after a delay
-        }, 500); // Debounce for 500ms
-    
-        return () => clearTimeout(timeoutId); // Clean up the timeout if input changes
-      }, [searchQuery]); // Onl
-   
-     
-  
+    if (location.pathname !== "/") {
+      // Navigate to home with search state if not already on home
+      navigate("/", { state: { searchQuery } });
+    } else {
+      onSearch(searchQuery);
+    }
+  };
 
   return (
-    <>
-        <form className="search-bar" onSubmit={handleClick}>
+    <form className="search-bar" onSubmit={handleSearch}>
       <input
         type="text"
         className="search-input"
         value={searchQuery}
         onChange={handleInputChange}
-        placeholder={"Search"}
+        placeholder="Search..."
       />
-      <button></button>
- </form>
-    </>
+      <button type="submit" className="search-button">
+        <Search size={18} strokeWidth={2} />
+      </button>
+    </form>
   );
 };
 

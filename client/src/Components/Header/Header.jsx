@@ -1,35 +1,34 @@
 import { useState } from "react";
 import SearchBar from "./SearchBar";
-import "./Header.scss"
+import "./Header.scss";
 import CreateListing from "./CreateListing";
-import Chat from "./chat";
+import Chat from "./Chat";
 import ProfileMenu from "./ProfileMenu";
+import FlexRow from "../Layout/FlexRow";
 
-const Header = ({onSearch}) => {
-    
-    const handleSearch = (query) => {
-        if (onSearch) {
-            onSearch(query); // Passes to the parent `Home` component.
-        }
-    };
+const Header = ({ onSearch }) => {
+  return (
+    <header className="header">
+      <FlexRow>
+       {/* Logo */}
+      <div className="brand">
+        <img src="/b.svg" alt="Brand Logo" />
+      </div>
 
-    return(
-        <div className="header">
+      {/* Search Bar */}
+      <SearchBar onSearch={onSearch} />
 
-            <div className = "brand-div">
-            <img src="./brandLogo.svg"></img>
-            </div>
-            <SearchBar onSearch={handleSearch} />
-            <div className="user-actions-div">
-              <CreateListing />
-              <Chat />
-              <ProfileMenu />
-            </div>
-        </div>
-    )
+      {/* User Actions */}
+      <div className="user-actions">
+        <CreateListing />
+        <Chat />
+        <ProfileMenu />
+      </div>
 
-    
-}
-
+      </FlexRow>
+      
+    </header>
+  );
+};
 
 export default Header;

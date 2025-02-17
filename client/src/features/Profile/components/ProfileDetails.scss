@@ -1,12 +1,14 @@
 .profile-details-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* Centers the profile details container */
-    padding: 20px;
+    background-color: blue;
+    
+    padding: 4rem;
   }
   
   .profile-main-details-container {
     display: flex;
+    
     align-items: center; /* Ensures the image and text are vertically aligned */
     gap: 20px; /* Adds space between the image and text */
   }
@@ -18,14 +20,34 @@
     object-fit: cover; /* Ensures the image covers the circle */
   }
   
-  .profile-text-details {
+  .profile-main-details-text{
     display: flex;
+    gap: 1rem;
     flex-direction: column; /* Stack name and email vertically */
   }
+
   
-  .profile-detail-name, .profile-detail-email {
-    margin: 0;
-    font-size: 18px;
-    color: #333; /* Adjust font color */
+  .profile-detail-name {
+  
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffffff; /* Adjust font color */
     text-align: left; /* Align text to the left */
   }
+
+
+  .profile-detail-email{
+    font-size: 2rem;
+    color: #ffffff; 
+  }
+
+  .edit-profile-btn {
+    background-color: yellow;
+    border-style: none;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius:1 rem;
+    padding: 0.5rem;
+    width: 40%;
+  }
+

@@ -44,6 +44,7 @@ const getUserLikes = async (id) => {
 }
 
 
+
 const getUserReviews = async (id) => {
   try {
     // Make the GET request with the params
@@ -77,10 +78,10 @@ const getUserReviews = async (id) => {
 
   // Append each image file to the FormData
   images.forEach((image) => {
-    formData.append("images", image);
+    formData.append("product_images", image);
   });
 
-  try {
+   try {
     // Make a POST request to the backend API
     const response = await axios.post(`${API_BASE_URL}/products`, formData, {
       headers: {
@@ -93,6 +94,19 @@ const getUserReviews = async (id) => {
     throw error; // Rethrow error to be handled in the hook
   }
 };
+
+
+const deleteProduct = async (id) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/products/${id}`);
+
+    return response.data; // Return the response data
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Something went wrong');
+  }
+};
+
+
 
 // Fetch all categories
 const getCategories = async () => {
@@ -147,6 +161,26 @@ export const unlikeProduct = async (userId, productId) => {
   }
 };
 
+const sendMessage = async (senderId, receiverId, message) => {
+
+
+  const messageData = {
+    senderId,
+    receiverId,
+    message : message,
+  };
+
+  try {
+    const response = await axios.post(`${API_BASE_URL}/messages/send` ,messageData, )
+    return response.data
+  } 
+  catch(e){
+    throw e
+  }
+};
+
+
+
 const authenticateSignup = async (userData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/signup`, userData);
@@ -166,11 +200,11 @@ const authenticateSignup = async (userData) => {
 const authenticateLogin = async (userData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, userData);
-      return response.data;
+      return response.data
     } catch (error) {
       if (error.response) {
-        // Server responded with a status other than 2xx
         console.error('Error response:', error.response.data);
+        // Server responded with a status other than 2xx
       } else if (error.request) {
         // Request was made but no response received
         console.error('No response received:', error.request);
@@ -182,5 +216,57 @@ const authenticateLogin = async (userData) => {
     }
   };
 
-export {getProducts ,getProductById, getUserProducts, getUserLikes, getUserReviews, addProduct, getCategories, 
-  getMessages, getLikeStatus, likeProduct, authenticateSignup, authenticateLogin}
+
+  
+const getUserById = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${API_BASE_URL}/user/${id}`, 
+      {
+        headers: { Authorization: `Bearer ${token}` } // Headers should be in the third argument
+      }
+    );
+    return response.data
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+      // Server responded with a status other than 2xx
+    } else if (error.request) {
+      // Request was made but no response received
+      console.error('No response received:', error.request);
+    } else {
+      // Something else happened during setup
+      console.error('Error setting up request:', error.message);
+    }
+    throw error;
+  }
+};
+
+
+
+  const updateUser = async (id, userData) => {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("username", userData.username);
+    formData.append("email", userData.email);
+    if (userData.image) {
+      formData.append("user_image", userData.image);
+    }
+
+    try {
+      const response = await axios.put(`${API_BASE_URL}/user/${id}`, formData, {
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "multipart/form-data" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      throw error
+    }
+  
+  };
+
+export {getProducts ,getProductById, getUserProducts, getUserLikes, getUserReviews,updateUser, addProduct, deleteProduct, getCategories, 
+  getMessages, sendMessage, getLikeStatus, likeProduct, authenticateSignup, authenticateLogin, getUserById}

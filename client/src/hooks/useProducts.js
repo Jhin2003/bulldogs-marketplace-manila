@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getProducts } from "../service/api"; // Ensure getProducts is imported correctly
 
 const useProducts = (search, categoryId) => {
@@ -53,12 +53,19 @@ const useProducts = (search, categoryId) => {
     }
   };
 
+  const refresh = useCallback(() => {
+    setPage(1);
+    setHasNextPage(true);
+    fetchProducts(1, search, categoryId);
+  }, [search, categoryId]); // Dependencies are search and categoryId
+
   return {
     products,
     loading,
     error,
     hasNextPage,
     loadMore,
+    refresh
   };
 };
 

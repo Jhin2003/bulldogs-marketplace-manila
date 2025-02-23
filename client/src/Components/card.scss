@@ -71,7 +71,10 @@
     .card-actions-container{
       display: flex;
       gap: 1rem;
-    
+     p{
+      font-size: 2rem;
+      font-weight: bold;
+     }
   }
 
 }

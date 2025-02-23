@@ -13,9 +13,13 @@
     gap: 20px; /* Adds space between the image and text */
   }
   
+  .profile-detail-picture-wrapper{
+    width: 100px;
+    height: 100px;
+  }
   .profile-detail-picture {
-    width: 100px; /* Adjust the image width */
-    height: 100px; /* Adjust the image height */
+    width: 100%; /* Adjust the image width */
+    height: 100%; /* Adjust the image height */
     border-radius: 50%; /* Makes the image circular */
     object-fit: cover; /* Ensures the image covers the circle */
   }

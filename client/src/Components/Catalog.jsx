@@ -8,6 +8,7 @@ import { showAlert } from "./Alert";
 import "./catalog.scss";
 import { useUser } from "../context/UserContext";
 import FlexLayout from "./Layout/FlexLayout";
+import TrendingSection from "./TrendingSection";
 const Catalog = ({ search, selectedCategory }) => {
   const { user } = useUser();
 
@@ -43,7 +44,6 @@ const Catalog = ({ search, selectedCategory }) => {
     return <div>Error: {error}</div>; // Display an error message if fetching failed
   }
 
-
   const handleEdit = async (productId) => {
     try {
       await deleteProduct(productId); // Call API to delete
@@ -59,27 +59,33 @@ const Catalog = ({ search, selectedCategory }) => {
   ); // Exclude user's products
 
   return (
-    <div className="catalog-container">
-    
-      <FlexLayout>
-      {search?.trim() && (
-          <div className="search-results-wrapper">
-            Found {filteredProducts.length} results for "{search}"
-          </div>
-        )}
-        <Grid columns={6}>
-          {filteredProducts // Exclude user's products
-            .map((product) => (
-              <Card
-                key={product.id}
-                product={product}
-                onDelete={product.User.id === user.id ? handleDelete : null} // Allow delete only if user owns the product
-                onEdit={product.User.id === user.id ? "" : ""} // Pass permission to Card component
-              />
-            ))}
-        </Grid>
-      </FlexLayout>
-    </div>
+    <>
+      <div className="catalog-container">
+        <FlexLayout>
+          
+            <TrendingSection selectedCategory={selectedCategory} />
+          
+        </FlexLayout>
+        <FlexLayout>
+          {search?.trim() && (
+            <div className="search-results-wrapper">
+              Found {filteredProducts.length} results for "{search}"
+            </div>
+          )}
+          <Grid columns={6}>
+            {filteredProducts // Exclude user's products
+              .map((product) => (
+                <Card
+                  key={product.id}
+                  product={product}
+                  onDelete={product.User.id === user.id ? handleDelete : null} // Allow delete only if user owns the product
+                  onEdit={product.User.id === user.id ? "" : ""} // Pass permission to Card component
+                />
+              ))}
+          </Grid>
+        </FlexLayout>
+      </div>
+    </>
   );
 };
 

@@ -12,8 +12,10 @@ const ProductDetails = ({product}) => {
     <div className='product-detail-container'>
       
       <h1 className='product-name'>{product.name}</h1>
-      
-      <p className='product-price'> ${product.price}</p>
+      <p className="product-price">
+  {new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(product.price)}
+</p>
+  
       <div className = 'product-description-wrapper'> 
        <h2>Description</h2>
        <p>{product.description}</p>

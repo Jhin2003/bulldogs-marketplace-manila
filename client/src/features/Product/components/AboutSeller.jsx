@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-const AboutSeller = ({seller}) =>{
+const AboutSeller = ({seller, createdAt}) =>{
 const {user} = useUser();
 const [isMessageClick, setIsMessageClick] = useState(false);
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const [isMessageClick, setIsMessageClick] = useState(false);
 
   const handleMessageClick = (e) => {
     e.preventDefault()
-    navigate(`/chat/${user.id}`)
+    navigate(`/chat/${seller.id}`)
   }
 
 
@@ -26,16 +26,15 @@ const [isMessageClick, setIsMessageClick] = useState(false);
         <div className= "about-seller-container">
          
          <div className="image-wrapper">
-        <img src="image.jpg" alt="Example"></img>
+        <img src= {`http://localhost:3000${seller.image_url}` }alt="Example"></img>
           </div>
           <div className="seller-infomation-container">
           <h1 className="seller-name">{seller.username}</h1>
             <h2>{seller.email}</h2>
-            <h2>{timeAgo(seller.createdAt)}</h2>
           </div>
           <button onClick={handleCLick}>View Seller Profile</button>
-          <button onClick={handleMessageClick}>message seller</button>
-          <SellerReviews user = {seller} />
+          <button onClick={handleMessageClick}>Message Seller</button>
+         
         </div>
     )
 }

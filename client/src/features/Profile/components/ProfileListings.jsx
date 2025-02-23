@@ -18,7 +18,7 @@ const ProfileListings = ({ isOwner, profile }) => {
   const [isEditProductModalOpen, setIsProductEditModalOpen] = useState(false);
   const [selectedEditProductId, setSelectedEditProductId] = useState(null)
 
-
+ 
   const handleDelete = async (productId) => {
     try {
       await deleteProduct(productId); // Call API to delete
@@ -32,6 +32,12 @@ const ProfileListings = ({ isOwner, profile }) => {
     setSelectedEditProductId(productId);
     setIsProductEditModalOpen(true);
   }
+
+  const handleProductModalClose = () => {
+    setIsProductEditModalOpen(false)
+    refresh();
+  }
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading products.</p>;
@@ -51,7 +57,7 @@ const ProfileListings = ({ isOwner, profile }) => {
         ))}
       </Grid>
      {isEditProductModalOpen && selectedEditProductId &&(
-      <EditProductModal productId={selectedEditProductId} />
+      <EditProductModal productId={selectedEditProductId} onClose={handleProductModalClose}/>
      )}
     </div>
     </>

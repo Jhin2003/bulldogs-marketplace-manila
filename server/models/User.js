@@ -33,7 +33,7 @@ const User = sequelize.define(
 
     image_url: {
       type: DataTypes.STRING(255), // URL or path to the image
-      defaultValue: "/images/userImages/default.jpg",
+      defaultValue: "/images/default/Default.jpg",
     },
 
     

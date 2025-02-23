@@ -1,4 +1,4 @@
-@use '../../../styles/mixins' ;
+@use "../../../styles/mixins";
 
 .login-form {
   display: flex;
@@ -6,57 +6,58 @@
   gap: 2rem;
   border-radius: 1.5rem;
 
+  .login-text-wrapper {
+    margin-bottom: 3rem;
 
-.login-text-wrapper {
-  margin-bottom: 3rem;
-  
-  p:first-child {
-    font-weight: bold; // Make "Login" bold
-    font-size: 4rem; // Adjust size if needed
+    p:first-child {
+      font-weight: bold; // Make "Login" bold
+      font-size: 4rem; // Adjust size if needed
+    }
+
+    p:last-child {
+      font-weight: normal; // Keep "Please Enter your credentials" normal
+      font-size: 3rem; // Ensure a normal size
+    }
   }
 
-  p:last-child {
-    font-weight: normal; // Keep "Please Enter your credentials" normal
-    font-size: 3rem; // Ensure a normal size
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; // Adds space between label and input
+
+    label {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    input {
+      @include mixins.input-default;
+    }
   }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem; // Adds space between label and input
-
-  label {
+  .login-button {
+    @include mixins.button-default(#ffd511, black); // Correct argument passing
+    border-radius: 1.5rem;
+    padding: 1rem;
     font-size: 2rem;
     font-weight: bold;
+    // You can keep this as a fallback if needed
   }
+  .toggle-text {
+    font-size: 1.5rem; // Adjust size as needed
+    color: #333; // Default text color
 
-  input {
-    @include mixins.input-default;
-    
-  }
-}
-.login-button {
-  @include mixins.button-default(#ffd511, black);  // Correct argument passing
-  border-radius: 1.5rem;
-  padding: 1rem;
-  font-size: 2rem;
-  font-weight: bold;
-// You can keep this as a fallback if needed
-}
-.toggle-text {
-  font-size: 1.5rem; // Adjust size as needed
-  color: #333; // Default text color
+    .toggle-link {
+      color: #323e8f; // Makes the "Login" text blue
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: underline; // Optional: Adds underline effect
+    }
 
-  .toggle-link {
-    color: #323e8f; // Makes the "Login" text blue
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: underline; // Optional: Adds underline effect
+    .toggle-link:hover {
+      color: darkblue; // Changes color on hover for better UI
+    }
   }
-
-  .toggle-link:hover {
-    color: darkblue; // Changes color on hover for better UI
+  .error-text {
+    color: red;
   }
-}
 }

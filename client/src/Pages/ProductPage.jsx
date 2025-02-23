@@ -45,7 +45,7 @@ const ProductPage = () => {
           >
             <ProductDetails product={product} />
             {/* Conditionally render AboutSeller only if user is not the owner */}
-            {!isOwner && <AboutSeller seller={product.User} />}
+            {!isOwner && <AboutSeller seller={product.User} createdAt product={product.createdAt} />}
           </FlexRow>
         </FlexLayout>
       </div>

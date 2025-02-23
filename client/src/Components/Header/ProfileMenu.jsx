@@ -30,7 +30,7 @@ function ProfileMenu() {
       {/* Profile Icon and Name */}
       <div className="profile-menu-trigger" onClick={togglePopup}>
         <img
-          src={`http://localhost:3000/images/userImages/default.svg`}
+          src={`http://localhost:3000${user?.image_url}`}
           alt="Profile"
           className="profile-menu-icon"
         />

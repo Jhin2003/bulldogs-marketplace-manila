@@ -4,7 +4,7 @@ import { updateUser } from "../../../../service/api";
 import { useUser } from "../../../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
-const EditProfileModal = ({ onClose , profile}) => {
+const EditProfileModal = ({ onClose , profile, refreshProfile}) => {
   const navigate = useNavigate();
   const { user, login } = useUser();
 
@@ -32,8 +32,10 @@ const EditProfileModal = ({ onClose , profile}) => {
     const response = await updateUser(user.id, updatedUser);
     if (response) {
       login(response.token, response.user);
+      refreshProfile(updatedProfile)
     }
     navigate(`/profile/${user.id}`)
+ 
     onClose(); // Close modal after saving
   };
 

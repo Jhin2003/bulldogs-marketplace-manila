@@ -10,7 +10,8 @@ const Likes = require("../models/Like")
 const Review = require("../models/Review")
 const ProductImage = require("../models/ProductImage")
 const Category = require("../models/Category");
-
+const Transaction = require("../models/Transaction");
+const { Op } = require("sequelize");
 const SECRET_KEY = process.env.JWT_SECRET_key || "your_jwt_secret"; // Store in .env
 
 
@@ -60,6 +61,8 @@ const loginUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    console.log(user)
+
     // Compare the password with the hashed password stored in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -68,7 +71,7 @@ const loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username, email: user.email, image_url: user.image_url },
+      { id: user.id, username: user.username, email: user.email, image_url: user.image_url , role : user.role},
        SECRET_KEY,
       { expiresIn: "1hr" } // Token expires in 7 days
     );
@@ -82,6 +85,26 @@ const loginUser = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
+  }
+};
+
+
+const getUsers = async (req, res) => {
+  try {
+    // Fetch all users, excluding the password field
+    const users = await User.findAll({
+      attributes: { exclude: ["password"] },
+    });
+
+    // Check if users exist
+    if (!users.length) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.status(200).json(users); // Send the users as a response
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -159,50 +182,89 @@ const updateUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract user ID from URL parameters
+
+    // Find the user by ID
+    const user = await User.findByPk(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Delete the user from the database
+    await user.destroy();
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 
 
 
 
 const getUserProducts = async (req, res) => {
   try {
-      const { id} = req.params; // Assuming the user ID is passed as a route parameter
-     
-      // Check if user exists
-      const user = await User.findByPk(id);
-      if (!user) {
-     
-          return res.status(404).json({ message: 'User not found' });
-      }
+    const { id } = req.params; // User ID from route parameter
 
-      // Fetch products associated with the user
-      const products = await Product.findAll({
-          where: { user_id: id}, // Assuming 'userId' is the foreign key in the Product table
-          include: [
-            {
-              model: ProductImage,
-              required: false, // Optional: Products without images will also be included
-              attributes: ["image_url"], // Specify columns to include
-            },
-            {
-              model: User,
-              required: true, // Optional: Only include products with associated users
-              attributes: ["id", "username", "email", "image_url"], // User attributes to include
-            },
-            {
-              model: Category,
-              required: true, // Optional: Only products that have an associated category
-              attributes: ["name"], // Category name (you can include more attributes if needed)
-            },
-          ],
-      });
+    // Check if user exists
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-      res.status(200).json(products);
+    // Fetch product IDs that are in transactions
+    const transactionProductIds = await Transaction.findAll({
+      attributes: ["product_id"], // Get only product_id column
+      raw: true, // Return plain array instead of Sequelize instances
+    });
+
+    const productIdsInTransactions = transactionProductIds.map(
+      (transaction) => transaction.product_id
+    );
+
+    // Define where condition to filter products owned by the user
+    const whereConditions = { user_id: id };
+
+    // Exclude products that are already in transactions
+    if (productIdsInTransactions.length > 0) {
+      whereConditions.id = {
+        [Op.notIn]: productIdsInTransactions,
+      };
+    }
+
+    // Fetch products owned by the user that are NOT in transactions
+    const products = await Product.findAll({
+      where: whereConditions,
+      include: [
+        {
+          model: ProductImage,
+          required: false,
+          attributes: ["image_url"],
+        },
+        {
+          model: User,
+          required: true,
+          attributes: ["id", "username", "email", "image_url"],
+        },
+        {
+          model: Category,
+          required: true,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    res.status(200).json(products);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching user products:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 
 const getUserLikes = async (req, res) => {
@@ -288,4 +350,4 @@ const getUserReviews = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser, getUserById, updateUser, getUserProducts, getUserLikes, getUserReviews };
+module.exports = { signupUser, loginUser, getUsers, getUserById, updateUser, deleteUser, getUserProducts, getUserLikes, getUserReviews };

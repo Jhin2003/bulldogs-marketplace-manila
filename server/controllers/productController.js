@@ -4,58 +4,72 @@ const {User} = require("../models/User");
 const ProductImage = require("../models/ProductImage");
 const Category = require("../models/Category");
 const { Op } = require("sequelize");
-
+const Transaction = require("../models/Transaction")
 
 
 const getProducts = async (req, res) => {
-  const { search, categoryId, page = 1, limit = 10 } = req.query; // Destructure query params
-   
-  // Calculate the offset for pagination
+  const { search, categoryId, page = 1, limit = 10 } = req.query;
+
   const offset = (page - 1) * limit;
 
   try {
-    const whereConditions = {}; // Conditions for filtering
+    const whereConditions = {};
 
     // Search filter for product name
     if (search) {
       whereConditions.name = {
-        [Op.like]: `%${search}%`, // Like search query for product name
+        [Op.like]: `%${search}%`,
       };
     }
 
     // Category filter
     if (categoryId) {
-      whereConditions.category_id= categoryId; // Filter by categoryId if provided
+      whereConditions.category_id = categoryId;
     }
 
-    // Fetch products with pagination, search, and category filter
+    // Get all product IDs that are in transactions
+    const transactionProductIds = await Transaction.findAll({
+      attributes: ["product_id"], // Get only product_id column
+      raw: true, // Get plain array instead of Sequelize instances
+    });
+
+    const productIdsInTransactions = transactionProductIds.map(
+      (transaction) => transaction.product_id
+    );
+
+    // Exclude products that are in transactions
+    if (productIdsInTransactions.length > 0) {
+      whereConditions.id = {
+        [Op.notIn]: productIdsInTransactions,
+      };
+    }
+
+    // Fetch products with filters
     const { rows, count } = await Product.findAndCountAll({
       where: whereConditions,
       include: [
         {
           model: ProductImage,
-          required: false, // Optional: Products without images will also be included
-          attributes: ["image_url"], // Specify columns to include
+          required: false,
+          attributes: ["image_url"],
         },
         {
           model: User,
-          required: true, // Optional: Only include products with associated users
-          attributes: ["id", "username", "email", "image_url"], // User attributes to include
+          required: true,
+          attributes: ["id", "username", "email", "image_url"],
         },
         {
           model: Category,
-          required: true, // Optional: Only products that have an associated category
-          attributes: ["name"], // Category name (you can include more attributes if needed)
+          required: true,
+          attributes: ["name"],
         },
       ],
-      limit: parseInt(limit), // Set the maximum number of records to return
-      offset: parseInt(offset), // Set the number of records to skip
+      limit: parseInt(limit),
+      offset: parseInt(offset),
     });
 
-    // Determine if there's a next page
     const hasNextPage = page * limit < count;
 
-    // Send the paginated products as a response
     res.json({
       data: rows,
       totalCount: count,
@@ -144,6 +158,35 @@ const addProduct = async (req, res) => {
  
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const {id } = req.params;
+    const { name, price, description, categoryId } = req.body;
+
+    // Find the product by ID
+    const product = await Product.findByPk(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Update product details
+    await product.update({
+      name,
+      price,
+      description,
+      categoryId,
+    });
+
+    return res.status(200).json({ product });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = updateProduct;
+
+
 // DELETE endpoint to delete a product by its ID
 
 const deleteProduct = async (req, res) => {
@@ -167,4 +210,4 @@ const deleteProduct = async (req, res) => {
 
 
 
-module.exports = { getProducts, getProductById, addProduct, deleteProduct};
+module.exports = { getProducts, getProductById, addProduct, updateProduct, deleteProduct};

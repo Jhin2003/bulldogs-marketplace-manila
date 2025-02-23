@@ -1,6 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
-
 
 const UserContext = createContext();
 
@@ -11,19 +10,33 @@ export const UserProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUser(decoded); // Store decoded user data
-    }
-    setIsLoading(false); // Set loading to false after checking token
+    const checkTokenExpiration = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decoded = jwtDecode(token);
+        const currentTime = Date.now() / 1000; // Convert to seconds
+
+        if (decoded.exp < currentTime) {
+          logout(); // Logout when token expires
+        } else {
+          setUser(decoded);
+        }
+      }
+      setIsLoading(false);
+    };
+
+    checkTokenExpiration(); // Check on mount
+
+    // Check token expiration every 30 seconds
+    const interval = setInterval(checkTokenExpiration, 30000);
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
   const login = (token) => {
     localStorage.setItem("token", token);
     const decoded = jwtDecode(token);
-    const { iat, exp, ...userData } = decoded
-    setUser(userData);
+    setUser(decoded);
   };
 
   const logout = () => {

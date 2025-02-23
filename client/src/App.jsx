@@ -10,6 +10,8 @@ import { UserProvider } from "./context/UserContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './global.scss';
 import  Alert  from "./Components/Alert";
+import ProtectedAdminRoute from "./Pages/ProtectedAdminRoute";
+import AdminPage from "./Pages/AdminPage";
 
 const queryClient = new QueryClient()
 const App = () => {
@@ -26,6 +28,11 @@ const App = () => {
             <Route path="/product/:id" element={<ProductPage />} />
             <Route path="/profile/:id" element={<ProfilePage />} />
             <Route path="/chat/:id" element={<ChatPage />} />
+
+             {/* Protected Admin Route */}
+             <Route element={<ProtectedAdminRoute />}>
+              <Route path="/admin" element={<AdminPage />} />
+            </Route>
         </Routes>
       </Router>
     </UserProvider>

@@ -92,5 +92,24 @@ const unlikeProduct = async (req, res) => {
     }
   };
   
+  const getProductLikes = async (req, res) => {
+    const { id } = req.params;
+  
+    if (!id) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+  
+    try {
+      const likeCount = await Like.count({
+        where: { product_id: id},
+      });
+  
+      res.status(200).json({ likes: likeCount });
+    } catch (error) {
+      console.error("Error fetching product likes:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+  
 
-module.exports = {getLikeStatus, likeProduct,unlikeProduct}
+module.exports = {getLikeStatus, likeProduct,unlikeProduct,  getProductLikes}

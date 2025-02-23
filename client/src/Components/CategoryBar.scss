@@ -1,17 +1,18 @@
 /* Style for the category bar container */
 .category-bar {
-
- padding-left: 18rem;
- display: flex;
+  
+  position: sticky;
+  top: 80px;
+  padding-left: 18rem;
+  display: flex;
   gap: 1.5rem; /* More natural spacing */
- 
-  border-bottom: 2px solid #ddd; /* Subtle separator */
 
+  border-bottom: 2px solid #ddd; /* Subtle separator */
 }
 
 /* Style for each category item */
 .category-item {
- padding: 1rem;
+  padding: 1rem;
   font-size: 2rem;
   font-weight: 500;
   color: #555;
@@ -20,15 +21,12 @@
   transition: color 0.3s ease;
 }
 
-
-
 /* Hover effect */
 .category-item:hover {
   color: #007bff;
 }
 
 /* Expand underline on hover and selection */
-
 
 /* Selected category style */
 .category-item.selected {

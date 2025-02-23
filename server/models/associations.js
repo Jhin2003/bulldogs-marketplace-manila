@@ -7,7 +7,7 @@ const Category = require("./Category");
 const Message = require("./Message");
 const Review = require("./Review");
 const Like = require("./Like")
-
+const Transaction = require("./Transaction")
 
 // Define model associations
  //Users and Messages
@@ -45,6 +45,12 @@ Review.belongsTo(User, { as: "reviewer" ,foreignKey: "reviewer_id" }); // A revi
 Product.hasMany(Review, { foreignKey: "product_id" }); // A product can have multiple reviews
 Review.belongsTo(Product, { foreignKey: "product_id" }); // A review is linked to one product
 
+Transaction.belongsTo(User, { foreignKey: "seller_id", as: "Seller", onDelete : "CASCADE" });
+Transaction.belongsTo(User, { foreignKey: "buyer_id", as: "Buyer", onDelete : "CASCADE" });
+Transaction.belongsTo(Product, { foreignKey: "product_id" , onDelete : "CASCADE"});
+Product.hasMany(Transaction, { foreignKey: "product_id" });
+
+
 // Export models and associations
 module.exports = {
   User,
@@ -54,5 +60,6 @@ module.exports = {
   Category,
   Message,
   Like,
-  Review
+  Review,
+  Transaction
 };

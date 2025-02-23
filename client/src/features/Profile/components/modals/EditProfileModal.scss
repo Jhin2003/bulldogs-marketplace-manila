@@ -36,6 +36,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 80px;
     cursor: pointer;
     margin-bottom: 1rem;
   
@@ -45,7 +46,7 @@
       margin-bottom: 0.5rem;
       font-weight: bold;
     }
-  
+    
     .edit-profile-image-preview {
       width: 180px;
       height: 180px;
@@ -60,6 +61,7 @@
       }
     }
   }
+
   
   // Input Fields
   .edit-profile-input-group {

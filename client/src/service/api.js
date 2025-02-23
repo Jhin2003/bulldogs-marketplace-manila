@@ -179,6 +179,28 @@ const sendMessage = async (senderId, receiverId, message) => {
   }
 };
 
+const addTransaction = async(seller_id, buyer_id, product_id) =>{
+  const transactionData = {
+    seller_id,
+    buyer_id,
+    product_id
+
+  }
+ try{
+  const response = await axios.post(`${API_BASE_URL}/transactions`, transactionData)
+  return response.data;
+ }catch(error){
+  if (error.response) {
+    console.error('Error response:', error.response.data);
+  } else if (error.request) {
+    console.error('No response received:', error.request);
+  } else {
+    console.error('Error setting up request:', error.message);
+  }
+  throw error; // Re-throw the error for the caller to handle
+ }
+}
+
 
 
 const authenticateSignup = async (userData) => {
@@ -217,6 +239,34 @@ const authenticateLogin = async (userData) => {
   };
 
 
+  const getUsers = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/user`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
+  }
+
+
+ const updateProduct = async (id, updatedData) => {
+    const token = localStorage.getItem("token"); // Assuming JWT authentication
+  
+    try {
+      const response = await axios.put(`${API_BASE_URL}/products/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  };
   
 const getUserById = async (id) => {
   try {
@@ -244,6 +294,15 @@ const getUserById = async (id) => {
 };
 
 
+const getTrendingWord = async() =>{
+  try{
+  const response = await axios.get(`${API_BASE_URL}/transactions/trending`)
+  return response.data
+  }catch(error){
+    throw error
+  }
+}
+
 
   const updateUser = async (id, userData) => {
     const token = localStorage.getItem("token");
@@ -268,5 +327,13 @@ const getUserById = async (id) => {
   
   };
 
-export {getProducts ,getProductById, getUserProducts, getUserLikes, getUserReviews,updateUser, addProduct, deleteProduct, getCategories, 
-  getMessages, sendMessage, getLikeStatus, likeProduct, authenticateSignup, authenticateLogin, getUserById}
+  const deleteUser = async (id) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/user/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error
+    }}
+
+export {getProducts ,getProductById, getUserProducts,deleteUser, getUsers,updateProduct, getUserLikes, getUserReviews,updateUser, addProduct, deleteProduct, getCategories, 
+  getMessages, sendMessage, getLikeStatus, likeProduct, authenticateSignup, getTrendingWord, authenticateLogin, addTransaction, getUserById}

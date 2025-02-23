@@ -30,11 +30,13 @@ const ProfileProductCard = ({ product, onDelete, onEdit, isOwner = false }) => {
           />
         </div>
         <div className="card-name">{product.name}</div>
-        <div className="card-price">${product.price}</div>
+        <div className="card-price">
+  {new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(product.price)}
+</div>
         <div className="card-username">{product.User.username}</div>
         <div className="card-time-agp">{timeAgo(product.createdAt)}</div>
         <div className="card-actions-container">
-          <LikeButton userId={user.id} productId={product.id} />
+      
   
           {isOwner && (
             <>

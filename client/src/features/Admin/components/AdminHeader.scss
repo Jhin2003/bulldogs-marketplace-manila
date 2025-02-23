@@ -1,0 +1,23 @@
+
+
+.admin-header{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    width: 100%;
+    p{
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    .logout-btn{
+        width: 60px;
+        border: none;
+        padding: 1rem;
+        background-color: #f44336;
+        border-radius: 1rem;
+        color: white;
+      
+    }
+}

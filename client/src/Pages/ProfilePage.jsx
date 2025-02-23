@@ -13,13 +13,14 @@ import useProfile from "../features/Profile/hooks/useProfile";
 function ProfilePage() {
   const { id } = useParams();
   const { user } = useUser();
-
   const { profile, loading, error } = useProfile(id);
+ 
 
   const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     if (profile && user) {
+    
       setIsOwner(profile.id === user.id);
     }
   }, [profile, user]);

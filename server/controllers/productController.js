@@ -174,7 +174,7 @@ const updateProduct = async (req, res) => {
       name,
       price,
       description,
-      categoryId,
+      category_id : categoryId,
     });
 
     return res.status(200).json({ product });

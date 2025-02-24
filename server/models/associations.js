@@ -1,6 +1,6 @@
 // Import all models
 const {User} = require("./User");
-const UserImage = require("./UserImage");
+
 const Product = require("./Product");
 const ProductImage = require("./ProductImage");
 const Category = require("./Category");
@@ -24,9 +24,6 @@ Product.belongsTo(User, { foreignKey: "user_id" });
 Category.hasMany(Product, { foreignKey: "category_id" });
 Product.belongsTo(Category, { foreignKey: "category_id" });
 
-// Users and User Images
-User.hasMany(UserImage, { foreignKey: "user_id" });
-UserImage.belongsTo(User, { foreignKey: "user_id" });
 
 // Products and Product Images
 Product.hasMany(ProductImage, { foreignKey: "product_id" });
@@ -54,7 +51,6 @@ Product.hasMany(Transaction, { foreignKey: "product_id" });
 // Export models and associations
 module.exports = {
   User,
-  UserImage,
   Product,
   ProductImage,
   Category,
